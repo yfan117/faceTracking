@@ -65,7 +65,7 @@ public class FindDensity {
 						
 					}
 				}
-				gride.add(new Gride(x, y, totalPixelCount, darkPixelCount));
+				gride.add(new Gride(x, y, grideSize, totalPixelCount, darkPixelCount));
 			}
 			
 		}

@@ -23,12 +23,12 @@ import Shaps.Circle;
 public class Renderer extends JFrame{
 	
 	static BufferedImage bufferedImage;
-	static BufferedImage printImage;
+	static BufferedImage processedImage;
 	
 	public int width;
 	public int height;
 	
-	static int[] imageData;
+	public int[] imageData;
 	public int[] processedImageData;
 	
 	Display display;
@@ -76,9 +76,11 @@ public class Renderer extends JFrame{
 	}
 	
 	static ArrayList<Gride> sortedGride;
-	public void setHighestGride(ArrayList<Gride> gride)
+	static ArrayList<Gride> colorGride;
+	public void setGrides(ArrayList<Gride> gride, ArrayList<Gride> colorGride)
 	{
 		sortedGride = gride;
+		this.colorGride = colorGride;
 	}
 	
 	public void circleImage()
@@ -126,10 +128,8 @@ public class Renderer extends JFrame{
 	
 	public void arrayToImage()
 	{
-		
 
-		
-		printImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		processedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 //        WritableRaster raster = (WritableRaster) printImage.getData();
 //        
 //        raster.setPixels(0, 0, width, height, imageData);
@@ -146,7 +146,7 @@ public class Renderer extends JFrame{
 					
 					Color newColor;
 //					System.out.println(temp);
-					temp = 10;
+					temp = 2;
 					if(y + 1 < height)
 					{
 						Color color2 = new Color(imageData[x + (y + 1) * width]);
@@ -197,7 +197,7 @@ public class Renderer extends JFrame{
 //					if(blue > 255/3){red = 255;green = 255;blue = 255;}
 //					else{red = 0;green = 0;blue = 0;}
 					processedImageData[x + y * width] = newColor.getRGB();
-					printImage.setRGB(x, y, newColor.getRGB());
+					processedImage.setRGB(x, y, newColor.getRGB());
 				}
 				
 			}
@@ -226,23 +226,34 @@ class Display extends JPanel{
 
 		Graphics2D g2d = (Graphics2D) g;
 		
-		g2d.drawImage(Renderer.printImage, 0, 0, null);
+		g2d.drawImage(Renderer.bufferedImage, 0, 0, null);
 		
-		g2d.setColor(Color.green);
 		g2d.setStroke(new BasicStroke(4));
 		if(Renderer.sortedGride != null)
 		{
+			g2d.setColor(Color.green);
 			for(Gride element: Renderer.sortedGride)
 			{
-				g2d.setColor(Color.green);
-				g2d.setStroke(new BasicStroke(4));
-				
+
 				g2d.drawRect(element.getX(),
 							   element.getY(),
-							   50,
-							   50);
+							   element.getSize(),
+							   element.getSize());
 			}
 		}
+		
+		if(Renderer.colorGride != null)
+		{
+			g2d.setColor(Color.blue);
+			for(Gride element: Renderer.colorGride)
+			{
+				g2d.drawRect(element.getX(),
+							   element.getY(),
+							   element.getSize(),
+							   element.getSize());
+			}
+		}
+		
 		
 
 	}

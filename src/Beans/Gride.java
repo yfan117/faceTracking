@@ -4,18 +4,17 @@ public class Gride {
 	
 	private int x;
 	private int y;
-	private int gridex;
+	private int size;
 	private int grideY;
 	private int pixels;
 	private double density;
 	private int totalPixels;
 	
-	public Gride(int x, int y, int totalPixels, int pixels)
+	public Gride(int x, int y, int size, int totalPixels, int pixels)
 	{
 		this.x = x;
 		this.y = y;
-		this.gridex = gridex;
-		this.grideY = grideY;
+		this.size = size;
 		this.pixels = pixels;
 		this.totalPixels = totalPixels;
 		
@@ -27,14 +26,15 @@ public class Gride {
 	{
 		return x;
 	}
+	public int getSize()
+	{
+		return size;
+	}
 	public int getY()
 	{
 		return y;
 	}
-	public int getGrideX()
-	{
-		return gridex;
-	}
+
 	public int getGrideY()
 	{
 		return grideY;
@@ -46,7 +46,7 @@ public class Gride {
 
 	@Override
 	public String toString() {
-		return "Gride [x=" + x + ", y=" + y + ", gridex=" + gridex + ", grideY=" + grideY + ", pixels=" + pixels
+		return "Gride [x=" + x + ", y=" + y + ", grideY=" + grideY + ", pixels=" + pixels
 				+ ", density=" + density + ", totalPixels=" + totalPixels + "]";
 	}
 
