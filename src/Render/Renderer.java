@@ -75,18 +75,25 @@ public class Renderer extends JFrame{
 		this.add(controlPanel, BorderLayout.WEST);
 //		BoxLayout boxlayout = new BoxLayout(controlPanel, BoxLayout.Y_AXIS);
 		controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.Y_AXIS));
-		controlPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+		controlPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+		controlPanel.setBackground(Color.DARK_GRAY);
 		ActionHandler action = new ActionHandler();
 		
 		toggleImageButton = new JButton("Toggle Image View");
+		toggleImageButton.setBackground(Color.DARK_GRAY);
+		toggleImageButton.setForeground(Color.white);
 		toggleImageButton.addActionListener(action);
 		controlPanel.add(toggleImageButton);
 		
 		toggleGrideButton = new JButton("Toggle Selection");
+		toggleGrideButton.setBackground(Color.DARK_GRAY);
+		toggleGrideButton.setForeground(Color.white);
 		toggleGrideButton.addActionListener(action);
 		controlPanel.add(toggleGrideButton);
 	
 		contrastSlider = new JSlider(0,50);
+		contrastSlider.setBackground(Color.DARK_GRAY);
+		contrastSlider.setForeground(Color.white);
 		contrastSlider.addChangeListener(action);
 		controlPanel.add(contrastSlider);
 		contrastSlider.setPaintTrack(true);
@@ -96,10 +103,13 @@ public class Renderer extends JFrame{
 		contrastSlider.setMinorTickSpacing(5);
 		contrastLabel = new JLabel();
 		contrastLabel.setText("Contrast Value: " +contrastSlider.getValue());
+		contrastLabel.setForeground(Color.white);
 		controlPanel.add(contrastLabel);	
 		controlPanel.add(new JLabel("---------------------------------------------"));
 		
 		scanSizeSlider = new JSlider(0,100);
+		scanSizeSlider.setBackground(Color.DARK_GRAY);
+		scanSizeSlider.setForeground(Color.white);
 		scanSizeSlider.addChangeListener(action);
 		controlPanel.add(scanSizeSlider);
 		scanSizeSlider.setPaintTrack(true);
@@ -109,10 +119,13 @@ public class Renderer extends JFrame{
 		scanSizeSlider.setMinorTickSpacing(5);
 		scanSizeLabel = new JLabel();
 		scanSizeLabel.setText("Scann Size: " +scanSizeSlider.getValue());
+		scanSizeLabel.setForeground(Color.white);
 		controlPanel.add(scanSizeLabel);	
 		controlPanel.add(new JLabel("---------------------------------------------"));
 		
 		countSlider = new JSlider(0,100);
+		countSlider.setBackground(Color.DARK_GRAY);
+		countSlider.setForeground(Color.white);
 		countSlider.addChangeListener(action);
 		controlPanel.add(countSlider);
 		countSlider.setPaintTrack(true);
@@ -122,20 +135,25 @@ public class Renderer extends JFrame{
 		countSlider.setMinorTickSpacing(5);
 		countLabel = new JLabel();
 		countLabel.setText("Count Number: " +countSlider.getValue());
+		countLabel.setForeground(Color.white);
 		controlPanel.add(countLabel);	
 		controlPanel.add(new JLabel("---------------------------------------------"));
 		
 		update = new JButton("Update");
+		update.setBackground(Color.DARK_GRAY);
+		update.setForeground(Color.white);
 		controlPanel.add(update);
 		update.addActionListener(action);
 			
 		JMenuBar menuBar = new JMenuBar();
-		
 		JMenu file = new JMenu("File");
 		JMenuItem open = new JMenuItem("Open");
 		file.add(open);
 		open.addActionListener(action);
 		menuBar.add(file);
+		menuBar.setBackground(Color.LIGHT_GRAY);
+		menuBar.setForeground(Color.white);
+		
 		
 		this.setJMenuBar(menuBar);
 		
@@ -273,6 +291,80 @@ public class Renderer extends JFrame{
 //					
 //					if(blue > 255/3){red = 255;green = 255;blue = 255;}
 //					else{red = 0;green = 0;blue = 0;}
+//					newColor = new Color(red, green, blue);
+					
+//					processedImageData[x + y * width] = newColor.getRGB();
+//					processedImage.setRGB(x, y, newColor.getRGB());
+				}
+				
+			}
+		}
+		
+		for(int x = 0; x < width; x++)
+		{
+			for(int y = 0; y < height; y++)
+			{
+				//if(imageData[x + y * width] != -1)
+				{
+					Color color = new Color(imageData[x + y * width]);
+					int red = color.getRed();
+					int green = color.getGreen();
+					int blue = color.getBlue();
+					
+					Color newColor;
+//					System.out.println(temp);
+					
+					if(y + 1 < height)
+					{
+						Color color2 = new Color(imageData[x + (y + 1) * width]);
+						int red2 = color2.getRed();
+						int green2 = color2.getGreen();
+						int blue2 = color2.getBlue();
+
+						if((Math.abs(red - red2)>contrastValue)&&(Math.abs(green - green2)>contrastValue)&&(Math.abs(blue - blue2)>contrastValue))
+						{
+							newColor = new Color(-16777216);
+						}
+//						if(Math.abs((red + green + blue) -  (red2 + green2 + blue2))> 765/temp)
+//						{
+//							red = 0;green = 0;blue = 0;
+//							newColor = new Color(-16777216);
+//							
+//						}
+						else
+						{
+			
+							newColor = new Color(-1);
+						}
+					}
+					else
+					{
+		
+						newColor = new Color(-1);
+					}
+					
+					
+//					if(red + green + blue > temp)
+//					{
+//						red = 255;green = 255;blue = 255;
+//						newColor = new Color(-1);
+//					}
+//					else
+//					{
+//						red = 0;green = 0;blue = 0;
+//						newColor = new Color(-16777216);
+//					}
+					
+//					if(red > 255/3){red = 255;green = 255;blue = 255;}
+//					else{red = 0;green = 0;blue = 0;}
+//					
+//					if(green > 255/3){red = 255;green = 255;blue = 255;}
+//					else{red = 0;green = 0;blue = 0;}
+//					
+//					if(blue > 255/3){red = 255;green = 255;blue = 255;}
+//					else{red = 0;green = 0;blue = 0;}
+//					newColor = new Color(red, green, blue);
+					
 					processedImageData[x + y * width] = newColor.getRGB();
 					processedImage.setRGB(x, y, newColor.getRGB());
 				}
@@ -300,7 +392,7 @@ class Display extends JPanel{
 		
 		//super.paint(g2d); causes crash
 		
-		g2d.setColor(Color.LIGHT_GRAY);
+		g2d.setColor(Color.DARK_GRAY);
 		g2d.fillRect(0, 0, 1920, 1080);
 		
 		if(Renderer.bufferedImage != null)
