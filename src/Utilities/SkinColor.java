@@ -8,7 +8,7 @@ import Beans.Gride;
 public class SkinColor {
 	
 	static ArrayList<Color> skinColors = new ArrayList<>();
-	public static ArrayList<Gride> colorGride = new ArrayList<>();
+	public static ArrayList<Gride> colorGride;
 	
 	public static void enableColors()
 	{

@@ -289,19 +289,19 @@ public class Renderer extends JFrame{
 class Display extends JPanel{
 	
 
-	public Display()
-	{
-		
-	}
-	
 	public void update()
 	{
 		repaint();
 	}
 	protected void paintComponent(Graphics g)
 	{
-
+		
 		Graphics2D g2d = (Graphics2D) g;
+		
+		//super.paint(g2d); causes crash
+		
+		g2d.setColor(Color.LIGHT_GRAY);
+		g2d.fillRect(0, 0, 1920, 1080);
 		
 		if(Renderer.bufferedImage != null)
 		{
