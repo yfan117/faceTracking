@@ -1,6 +1,7 @@
 package Render;
 
 import java.awt.BasicStroke;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -12,17 +13,28 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JSlider;
 
 import Beans.Gride;
+import Controller.ActionHandler;
 import Controller.MouseController;
 import Shaps.Circle;
+import Utilities.SkinColor;
 
 public class Renderer extends JFrame{
 	
-	static BufferedImage bufferedImage;
+	public static BufferedImage bufferedImage;
 	static BufferedImage processedImage;
 	
 	public int width;
@@ -32,62 +44,127 @@ public class Renderer extends JFrame{
 	public int[] processedImageData;
 	
 	Display display;
+	public JSlider contrastSlider;
+	public JLabel contrastLabel;
 	
+	public JSlider scanSizeSlider;
+	public JLabel scanSizeLabel;
+	
+	public JSlider countSlider;
+	public JLabel countLabel;
+	
+	public int scanSize = 25;
+	
+	public JButton update;
+	
+	public JButton toggleImageButton;
+	public JButton toggleGrideButton;
+
+	public static boolean toggleImage = false;
+	public static boolean toggleGride = false;
+	
+
 	public Renderer() 
 	{
-		try {
-			bufferedImage = ImageIO.read(new File("resource/yangmi.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		width = bufferedImage.getWidth(null);
-		height = bufferedImage.getHeight(null);
-		imageToArray();
-		arrayToImage();
+
 		
 		display = new Display();
+		this.add(display, BorderLayout.CENTER);
 		
+		JPanel controlPanel = new JPanel();
+		this.add(controlPanel, BorderLayout.WEST);
+//		BoxLayout boxlayout = new BoxLayout(controlPanel, BoxLayout.Y_AXIS);
+		controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.Y_AXIS));
+		controlPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+		ActionHandler action = new ActionHandler();
 		
-		this.add(display);
+		toggleImageButton = new JButton("Toggle Image View");
+		toggleImageButton.addActionListener(action);
+		controlPanel.add(toggleImageButton);
+		
+		toggleGrideButton = new JButton("Toggle Selection");
+		toggleGrideButton.addActionListener(action);
+		controlPanel.add(toggleGrideButton);
+	
+		contrastSlider = new JSlider(0,50);
+		contrastSlider.addChangeListener(action);
+		controlPanel.add(contrastSlider);
+		contrastSlider.setPaintTrack(true);
+		contrastSlider.setPaintTicks(true);
+		contrastSlider.setPaintLabels(true);
+		contrastSlider.setMajorTickSpacing(50);
+		contrastSlider.setMinorTickSpacing(5);
+		contrastLabel = new JLabel();
+		contrastLabel.setText("Contrast Value: " +contrastSlider.getValue());
+		controlPanel.add(contrastLabel);	
+		controlPanel.add(new JLabel("---------------------------------------------"));
+		
+		scanSizeSlider = new JSlider(0,100);
+		scanSizeSlider.addChangeListener(action);
+		controlPanel.add(scanSizeSlider);
+		scanSizeSlider.setPaintTrack(true);
+		scanSizeSlider.setPaintTicks(true);
+		scanSizeSlider.setPaintLabels(true);
+		scanSizeSlider.setMajorTickSpacing(50);
+		scanSizeSlider.setMinorTickSpacing(5);
+		scanSizeLabel = new JLabel();
+		scanSizeLabel.setText("Scann Size: " +scanSizeSlider.getValue());
+		controlPanel.add(scanSizeLabel);	
+		controlPanel.add(new JLabel("---------------------------------------------"));
+		
+		countSlider = new JSlider(0,100);
+		countSlider.addChangeListener(action);
+		controlPanel.add(countSlider);
+		countSlider.setPaintTrack(true);
+		countSlider.setPaintTicks(true);
+		countSlider.setPaintLabels(true);
+		countSlider.setMajorTickSpacing(50);
+		countSlider.setMinorTickSpacing(5);
+		countLabel = new JLabel();
+		countLabel.setText("Count Number: " +countSlider.getValue());
+		controlPanel.add(countLabel);	
+		controlPanel.add(new JLabel("---------------------------------------------"));
+		
+		update = new JButton("Update");
+		controlPanel.add(update);
+		update.addActionListener(action);
+			
+		JMenuBar menuBar = new JMenuBar();
+		
+		JMenu file = new JMenu("File");
+		JMenuItem open = new JMenuItem("Open");
+		file.add(open);
+		open.addActionListener(action);
+		menuBar.add(file);
+		
+		this.setJMenuBar(menuBar);
+		
 		this.addMouseListener(new MouseController());;
-		this.setSize(bufferedImage.getWidth(null), bufferedImage.getHeight(null));
+		this.setSize(1920, 1080);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 		this.validate();
 	}
 	
-	int temp = 0;
+	public int contrastValue = 25;
 	public void update()
 	{
-//		if(temp > 255)
-//		{
-//			temp = 1;
-//		}
-//		else
-//		{
-//			temp += 10;
-//		}
-		//System.out.println("painting");
-
 		arrayToImage();
-		//circleImage();
 		display.update();
 	}
 	
-	static ArrayList<Gride> sortedGride;
+	static ArrayList<Gride> densityGrides;
 	static ArrayList<Gride> colorGride;
-	public void setGrides(ArrayList<Gride> gride, ArrayList<Gride> colorGride)
+
+	public void setDesnityGrides(ArrayList<Gride> densityGrides)
 	{
-		sortedGride = gride;
+		this.densityGrides = densityGrides;
+	}
+	public void setColorGrides(ArrayList<Gride> colorGride)
+	{
 		this.colorGride = colorGride;
 	}
-	
-	public void circleImage()
-	{
-		imageData = Circle.generateCircle(50);
-	}
-	
+
 	public void imageToArray()
 	{
 		System.out.println(bufferedImage.getWidth(null));
@@ -96,7 +173,7 @@ public class Renderer extends JFrame{
 		
 		imageData = new int[width * height];
 		processedImageData = new int[width * height];
-		System.out.println(temp);
+		
 		
 		for(int x = 0; x < width; x++)
 		{
@@ -146,7 +223,7 @@ public class Renderer extends JFrame{
 					
 					Color newColor;
 //					System.out.println(temp);
-					temp = 2;
+					
 					if(y + 1 < height)
 					{
 						Color color2 = new Color(imageData[x + (y + 1) * width]);
@@ -154,7 +231,7 @@ public class Renderer extends JFrame{
 						int green2 = color2.getGreen();
 						int blue2 = color2.getBlue();
 
-						if((Math.abs(red - red2)>temp)||(Math.abs(green - green2)>temp)||(Math.abs(blue - blue2)>temp))
+						if((Math.abs(red - red2)>contrastValue)&&(Math.abs(green - green2)>contrastValue)&&(Math.abs(blue - blue2)>contrastValue))
 						{
 							newColor = new Color(-16777216);
 						}
@@ -226,33 +303,48 @@ class Display extends JPanel{
 
 		Graphics2D g2d = (Graphics2D) g;
 		
-		g2d.drawImage(Renderer.bufferedImage, 0, 0, null);
-		
-		g2d.setStroke(new BasicStroke(4));
-		if(Renderer.sortedGride != null)
+		if(Renderer.bufferedImage != null)
 		{
-			g2d.setColor(Color.green);
-			for(Gride element: Renderer.sortedGride)
+			if(Renderer.toggleImage == false)
 			{
+				g2d.drawImage(Renderer.bufferedImage, 0, 0, null);
+			}
+			else
+			{
+				g2d.drawImage(Renderer.processedImage, 0, 0, null);
+			}
+		}
+		
+		
+		if(Renderer.toggleGride == false)
+		{
+			g2d.setStroke(new BasicStroke(4));
+			if(Renderer.densityGrides != null)
+			{
+				g2d.setColor(Color.green);
+				for(Gride element: Renderer.densityGrides)
+				{
 
-				g2d.drawRect(element.getX(),
-							   element.getY(),
-							   element.getSize(),
-							   element.getSize());
+					g2d.drawRect(element.getX(),
+								   element.getY(),
+								   element.getSize(),
+								   element.getSize());
+				}
 			}
-		}
-		
-		if(Renderer.colorGride != null)
-		{
-			g2d.setColor(Color.blue);
-			for(Gride element: Renderer.colorGride)
+			
+			if(Renderer.colorGride != null)
 			{
-				g2d.drawRect(element.getX(),
-							   element.getY(),
-							   element.getSize(),
-							   element.getSize());
+				g2d.setColor(Color.blue);
+				for(Gride element: Renderer.colorGride)
+				{
+					g2d.drawRect(element.getX(),
+								   element.getY(),
+								   element.getSize(),
+								   element.getSize());
+				}
 			}
 		}
+	
 		
 		
 

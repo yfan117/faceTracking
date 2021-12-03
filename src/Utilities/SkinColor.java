@@ -40,6 +40,7 @@ public class SkinColor {
 	
 	public static void hasColor(int grideSize, int[] data, int dataWidth, int dataHeight)
 	{
+		colorGride = new ArrayList<>();
 		for(int x = 0; x < dataWidth; x+=grideSize/2)
 		{
 			for(int y = 0; y < dataHeight; y+=grideSize/2)
@@ -107,7 +108,7 @@ public class SkinColor {
 				
 			}
 		}
-		System.out.println("color done scanning");
+		System.out.println("color done scanning\n");
 
 	}
 

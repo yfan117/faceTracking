@@ -1,34 +1,19 @@
 package Utilities;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
 
 import Beans.Gride;
 
 public class FindDensity {
 	
-	ArrayList<Gride> gride = new ArrayList<>();
-	
-	int grideSize;
-	int[] data;
-	int dataWidth;
-	int dataHeight;
-	
-	public FindDensity(int grideSize, int[] data, int dataWidth, int dataHeight)
-	{
-		this.grideSize = grideSize;
-		this.data = data;
-		this.dataWidth = dataWidth;
-		this.dataHeight = dataHeight;
-	}
-	
+	public static ArrayList<Gride> gride;
 
+	public static int count = 50;
 
-	public void findDensity()
+	public static void findDensity(int grideSize, int[] data, int dataWidth, int dataHeight)
 	{
-//		int grideX = (int)Math.ceil((double)dataWidth/(double)size);
-//		int grideY = (int)Math.ceil((double)dataHeight/(double)size);
-		
+		gride = new ArrayList<>();
 		for(int x = 0; x < dataWidth; x+=grideSize/2)
 		{
 			for(int y = 0; y < dataHeight; y+=grideSize/2)
@@ -69,20 +54,16 @@ public class FindDensity {
 			}
 			
 		}
-		System.out.println("scanning done");
+		System.out.println("contrast done scanning\n");
 	}
 	
 	public Gride hghestGride;
-	public ArrayList<Gride> sortedGride;
-	public void findTopTen()
+	public static ArrayList<Gride> sortedGride;
+	public static void findTopCount()
 	{
 		sortedGride = new ArrayList<>();
-		
-		
-		
-		
-		
-		for(int count = 0; count < 100; count++)
+
+		for(int a = 0; a < count; a++)
 		{
 			int i = 0;
 			double highestDensity = gride.get(0).getDensity();
