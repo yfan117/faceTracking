@@ -19,17 +19,28 @@ public class ActionHandler extends Driver implements ActionListener, ChangeListe
 		// TODO Auto-generated method stub
 		if(e.getSource().equals(render.update))
 		{
-			update();
+			if(render.bufferedImage != null)
+			{
+				update();
+			}
 		}
 		else if(e.getSource().equals(render.toggleImageButton))
 		{
-			render.toggleImage = !render.toggleImage;
-			update();
+			if(render.bufferedImage != null)
+			{
+				render.toggleImage = !render.toggleImage;
+				update();
+			}
+			
 		}
 		else if(e.getSource().equals(render.toggleGrideButton))
 		{
-			render.toggleGride = !render.toggleGride;
-			update();
+			if(render.bufferedImage != null)
+			{
+				render.toggleGride = !render.toggleGride;
+				update();
+			}
+			
 		}
 		else if(e.getActionCommand().equals("Open"))
 		{
