@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 
 import Beans.Gride;
 import Render.Renderer;
+import Utilities.CrossExamin;
 import Utilities.FindDensity;
 import Utilities.SkinColor;
 
@@ -43,6 +44,8 @@ public class Driver {
 		SkinColor.enableColors();
 		SkinColor.hasColor(render.scanSize, render.imageData, render.width, render.height);
 		
+		CrossExamin.examin(300, FindDensity.sortedGride, SkinColor.colorGride, render.width, render.height);
+		
 		render.setDesnityGrides(FindDensity.sortedGride);
 		render.setColorGrides(SkinColor.colorGride);
 		
@@ -54,6 +57,7 @@ public class Driver {
 		FindDensity.findDensity(render.scanSize, render.processedImageData, render.width, render.height);
 		FindDensity.findTopCount();
 		SkinColor.hasColor(render.scanSize, render.imageData, render.width, render.height);
+		CrossExamin.examin(300, FindDensity.sortedGride, SkinColor.colorGride, render.width, render.height);
 		render.setDesnityGrides(FindDensity.sortedGride);
 		render.setColorGrides(SkinColor.colorGride);
 		render.update();

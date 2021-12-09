@@ -30,6 +30,7 @@ import Beans.Gride;
 import Controller.ActionHandler;
 import Controller.MouseController;
 import Shaps.Circle;
+import Utilities.CrossExamin;
 import Utilities.SkinColor;
 
 public class Renderer extends JFrame{
@@ -428,6 +429,17 @@ class Display extends JPanel{
 			{
 				g2d.setColor(Color.blue);
 				for(Gride element: Renderer.colorGride)
+				{
+					g2d.drawRect(element.getX(),
+								   element.getY(),
+								   element.getSize(),
+								   element.getSize());
+				}
+			}
+			if(CrossExamin.finalGride != null)
+			{
+				g2d.setColor(Color.red);
+				for(Gride element: CrossExamin.finalGride)
 				{
 					g2d.drawRect(element.getX(),
 								   element.getY(),

@@ -5,7 +5,6 @@ public class Gride {
 	private int x;
 	private int y;
 	private int size;
-	private int grideY;
 	private int pixels;
 	private double density;
 	private int totalPixels;
@@ -35,10 +34,6 @@ public class Gride {
 		return y;
 	}
 
-	public int getGrideY()
-	{
-		return grideY;
-	}
 	public double getDensity()
 	{
 		return density;
@@ -46,7 +41,7 @@ public class Gride {
 
 	@Override
 	public String toString() {
-		return "Gride [x=" + x + ", y=" + y + ", grideY=" + grideY + ", pixels=" + pixels
+		return "Gride [x=" + x + ", y=" + y + ", pixels=" + pixels
 				+ ", density=" + density + ", totalPixels=" + totalPixels + "]";
 	}
 
